@@ -1,6 +1,6 @@
 {
   "name": "easy-stylelint-plugin",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Webpack plugin for running stylelint",
   "main": "index.js",
   "keywords": [
