@@ -32,6 +32,7 @@ class EasyStylelintPlugin {
     }, options)
 
     this.errors = []
+    this.warnings = []
   }
 
   apply (compiler) {
