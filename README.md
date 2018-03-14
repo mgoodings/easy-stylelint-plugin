@@ -30,8 +30,9 @@ module.exports = {
 
 See [stylelint options](http://stylelint.io/user-guide/node-api/#options) for the complete list of options. This object is passed straight to the `stylelint.lint` function and has the following defaults:
 
-* `changesOnly`: Lint only changed files. Default: `true`
+* `changesOnly`: Lint only changed files. Default: `false`
 * `ignoreFirstRun`: Used with `changesOnly` to ignore the first run. Default: `false`
+* `failOnError`: Throw a fatal error in the global build process. Default: `false`
 * `configFile`: You can change the config file location. Default: (`undefined`), handled by [stylelint's cosmiconfig module](http://stylelint.io/user-guide/configuration/).
 * `files`: Change the glob pattern for finding files. Must be relative to `options.context`. Default: `['**/*.s?(c|a)ss']`
 * `formatter`: Use a custom formatter to print errors to the console. Default: `require('stylelint').formatters.string`

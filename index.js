@@ -4,8 +4,9 @@ const emitter = require('./lib/emitter')
 
 class EasyStylelintPlugin {
   constructor (options = {}) {
-    this.onlyChanged = true
+    this.onlyChanged = false
     this.ignoreFirstRun = false
+    this.failOnError = false
 
     if (options.onlyChanged) {
       this.onlyChanged = options.onlyChanged
@@ -17,6 +18,12 @@ class EasyStylelintPlugin {
       this.ignoreFirstRun = options.ignoreFirstRun
 
       delete options.ignoreFirstRun
+    }
+
+    if (options.failOnError) {
+      this.failOnError = options.failOnError
+
+      delete options.failOnError
     }
 
     this.__options = Object.assign({
