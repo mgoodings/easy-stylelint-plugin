@@ -1,6 +1,15 @@
+const path = require('path')
 const formatter = require('stylelint').formatters.string
 const runner = require('./lib/runner')
 const emitter = require('./lib/emitter')
+
+const moveIfExists = (src, dest, attr) => {
+  if (src[attr]) {
+    dest[attr] = src[attr]
+
+    delete src[attr]
+  }
+}
 
 class EasyStylelintPlugin {
   constructor (options = {}) {
@@ -8,23 +17,9 @@ class EasyStylelintPlugin {
     this.ignoreFirstRun = false
     this.failOnError = false
 
-    if (options.changesOnly) {
-      this.changesOnly = options.changesOnly
-
-      delete options.changesOnly
-    }
-
-    if (options.ignoreFirstRun) {
-      this.ignoreFirstRun = options.ignoreFirstRun
-
-      delete options.ignoreFirstRun
-    }
-
-    if (options.failOnError) {
-      this.failOnError = options.failOnError
-
-      delete options.failOnError
-    }
+    moveIfExists(this, options, 'changesOnly')
+    moveIfExists(this, options, 'ignoreFirstRun')
+    moveIfExists(this, options, 'failOnError')
 
     this.__options = Object.assign({
       files: ['**/*.s?(c|a)ss'],
@@ -36,8 +31,15 @@ class EasyStylelintPlugin {
   }
 
   apply (compiler) {
+    const options = Object.assign({
+      context: compiler.context
+    }, this.__options)
+
+    options.files = options.files.map(file =>
+      path.resolve(options.context, file))
+
     if (this.changesOnly) {
-      const emitFn = emitter.bind(null, this, this.__options, compiler)
+      const emitFn = emitter.bind(null, this, options, compiler)
 
       if (compiler.hooks) {
         compiler.hooks.emit.tapAsync('EasyStylelintPlugin', emitFn)
@@ -45,7 +47,7 @@ class EasyStylelintPlugin {
         compiler.plugin('emit', emitFn)
       }
     } else {
-      const runFn = runner.bind(null, this, this.__options)
+      const runFn = runner.bind(null, this, options)
 
       if (compiler.hooks) {
         compiler.hooks.run.tapAsync('EasyStylelintPlugin', runFn)
