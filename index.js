@@ -4,14 +4,14 @@ const emitter = require('./lib/emitter')
 
 class EasyStylelintPlugin {
   constructor (options = {}) {
-    this.onlyChanged = false
+    this.changesOnly = false
     this.ignoreFirstRun = false
     this.failOnError = false
 
-    if (options.onlyChanged) {
-      this.onlyChanged = options.onlyChanged
+    if (options.changesOnly) {
+      this.changesOnly = options.changesOnly
 
-      delete options.onlyChanged
+      delete options.changesOnly
     }
 
     if (options.ignoreFirstRun) {
