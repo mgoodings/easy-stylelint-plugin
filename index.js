@@ -3,8 +3,8 @@ const formatter = require('stylelint').formatters.string
 const runner = require('./lib/runner')
 const emitter = require('./lib/emitter')
 
-const moveIfExists = (src, dest, attr) => {
-  if (src[attr]) {
+const moveIfExists = (dest, src, attr) => {
+  if (src.hasOwnProperty(attr)) {
     dest[attr] = src[attr]
 
     delete src[attr]
